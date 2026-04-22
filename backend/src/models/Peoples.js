@@ -12,8 +12,13 @@ const peoplesSchema = new mongoose.Schema({
     trim: true,
   },
   company: {
+<<<<<<< HEAD
     type: mongoose.Schema.Types.ObjectId,
     ref: "Companiese",
+=======
+    type: String,
+    ref: "companiese",
+>>>>>>> 53b58dbac6d916af0c16915fefd286f947c4fcc4
     required: false,
   },
   country: {
@@ -21,12 +26,13 @@ const peoplesSchema = new mongoose.Schema({
     required: false,
   },
   phone: {
-    type: Number,
+    type: String,
     required: false,
   },
   email: {
     type: String,
     required: false,
+    unique:true
   },
   userId: {
     type: mongoose.Schema.Types.ObjectId,
