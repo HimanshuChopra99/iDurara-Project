@@ -78,3 +78,9 @@ const getAllCustomers = async (req, res) => {
     });
   }
 };
+
+module.exports = {
+  createCustomer,
+  getCustomerOptions,
+  getAllCustomers,
+};
