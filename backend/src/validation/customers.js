@@ -10,7 +10,7 @@ const customerSchema = zod
     if (data.type === "people" && !data.people) {
       ctx.addIssue({
         path: ["people"],
-        message: "People is required",
+        message: "People field is required",
         code: zod.ZodIssueCode.custom,
       });
     }
@@ -18,7 +18,7 @@ const customerSchema = zod
     if (data.type === "company" && !data.company) {
       ctx.addIssue({
         path: ["company"],
-        message: "Company is required",
+        message: "Company field is required",
         code: zod.ZodIssueCode.custom,
       });
     }

@@ -26,21 +26,23 @@ const getCustomerOptions = async (req, res) => {
 const createCustomer = async (req, res) => {
   try {
     const userId = req.user.id;
-    const body = req.body;
-    const parsedBody = customerSchema.safeParse(body);
+
+    //data validation
+    const parsedBody = customerSchema.safeParse(req.body);
     if (!parsedBody.success) {
       return res.status(400).json({
         success: false,
-        message: "failed to validate data",
+        message: "Validation failed",
+        errors: parsedBody.error.issues[0].message,
       });
     }
 
     //create payload
     const { type, company, people } = parsedBody.data;
 
-    let payload = { type, userId };
-    if (people) payload.people = people;
+    const payload = { type, userId };
     if (company) payload.company = company;
+    if (people) payload.people = people;
 
     //store in db
     const newCustomer = await Customers.create(payload);
@@ -65,6 +67,7 @@ const getAllCustomers = async (req, res) => {
     const userId = req.user.id;
     const customerData = await Customers.find({ userId }).populate("people");
 
+    console.log(customerData);
     res.status(200).json({
       success: true,
       message: "Customer data fetch successfully",
