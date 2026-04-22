@@ -1,11 +1,13 @@
-const { success } = require("zod");
 const { companiesSchema } = require("../validation/companies");
 const Companies = require("../models/Companies");
 
 const createCompanies = async (req, res) => {
   try {
     const body = req.body;
+    console.log(body)
     const parsedBody = companiesSchema.safeParse(body);
+
+    console.log(parsedBody)
 
     if (!parsedBody.success) {
       return res.status(400).json({
@@ -24,21 +26,25 @@ const createCompanies = async (req, res) => {
       });
     }
 
-    const payload = { name, email };
+    const payload = {
+      name,
+      email,
+      userId: req.user.id,
+    };
+
     if (contact) payload.contact = contact;
-    if (country) payload.country = country;
     if (country) payload.country = country;
     if (website) payload.website = website;
 
-    const newCompany = await Companies.createOne(payload);
+    const newCompany = await Companies.create(payload);
 
-    return res.status(200).json({
+    return res.status(201).json({
       success: true,
       data: newCompany,
     });
   } catch (error) {
     console.error(error);
-    res.status(400).json({
+    res.status(500).json({
       success: false,
       message: "Failed to create company",
     });
@@ -47,7 +53,12 @@ const createCompanies = async (req, res) => {
 
 const getCompanies = async (req, res) => {
   try {
-    const allCompanies = await Companies.find({});
+    const userId = req.user.id;
+
+    //get all data
+    const allCompanies = await Companies.find({ userId }).lean();
+
+    //return response
     res.status(200).json({
       success: true,
       message: "All companies data fetch successfully",
@@ -55,7 +66,7 @@ const getCompanies = async (req, res) => {
     });
   } catch (error) {
     console.error(error);
-    res.status(400).json({
+    res.status(500).json({
       success: false,
       message: "Failed to get companies data",
     });
@@ -63,6 +74,6 @@ const getCompanies = async (req, res) => {
 };
 
 module.exports = {
-    createCompanies,
-    getCompanies
-}
+  createCompanies,
+  getCompanies,
+};

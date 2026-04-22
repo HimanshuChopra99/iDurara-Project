@@ -13,7 +13,7 @@ const peoplesSchema = new mongoose.Schema({
   },
   company: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "companiese",
+    ref: "Companiese",
     required: false,
   },
   country: {
@@ -28,6 +28,11 @@ const peoplesSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+  },
 });
 
-module.exports = mongoose.model("Peoples", peoplesSchema)
+module.exports = mongoose.model("Peoples", peoplesSchema);

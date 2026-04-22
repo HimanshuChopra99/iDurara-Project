@@ -1,13 +1,12 @@
-const { success } = require("zod");
 const jwt = require("jsonwebtoken");
 
 require("dotenv").config();
 
 //authentication
-exports.auth = async (req, res, next) => {
+exports.auth = (req, res, next) => {
   try {
     const token =
-      req.cookie.token || req.headers("Authorization")?.replace("Bearer ", "");
+      req.cookies?.token || req.headers?.authorization?.replace("Bearer ", "");
 
     //token missing
     if (!token) {
@@ -18,15 +17,9 @@ exports.auth = async (req, res, next) => {
     }
 
     //verify
-    const decode = jwt.sign(token, process.env.JWT_SECRET);
-    if (decode) {
-      req.user = decode;
-      next();
-    } else
-      res.status(401).json({
-        success: false,
-        msg: "Error in verifying jwt token",
-      });
+    const decode = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = decode;
+    next();
   } catch (error) {
     console.log(error);
     return res.status(401).json({

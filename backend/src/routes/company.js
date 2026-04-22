@@ -6,5 +6,5 @@ const router = express.Router();
 router.post("/createCompany", createCompanies); //create company
 router.get("/getCompany", getCompanies); //get company data
 
-//export 
+//export
 module.exports = router;
