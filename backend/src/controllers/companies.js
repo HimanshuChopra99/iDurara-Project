@@ -1,6 +1,7 @@
 const { companiesSchema } = require("../validation/companies");
 const Companies = require("../models/Companies");
 
+//create company
 const createCompanies = async (req, res) => {
   try {
     const body = req.body;
@@ -44,13 +45,14 @@ const createCompanies = async (req, res) => {
     });
   } catch (error) {
     console.error(error);
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       message: "Failed to create company",
     });
   }
 };
 
+//get all companies
 const getCompanies = async (req, res) => {
   try {
     const userId = req.user.id;
@@ -59,14 +61,14 @@ const getCompanies = async (req, res) => {
     const allCompanies = await Companies.find({ userId }).lean();
 
     //return response
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
       message: "All companies data fetch successfully",
       data: allCompanies,
     });
   } catch (error) {
     console.error(error);
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       message: "Failed to get companies data",
     });
